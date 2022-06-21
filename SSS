@@ -16,74 +16,48 @@ void dodaj(stos **head, char znak){
     }
     else{
         stos *n = *head;
-        while(n -> nast !=NULL){
-            n = n -> nast;
-            n -> nast = nowy;
+
+        while (n->nast != NULL) {
+            n = n->nast;
         }
-        n -> nast = nowy;
-        nowy -> nast =NULL;
+        n->nast = nowy;
     }
 }
-void usun_element_stosu(stos *head){
-    stos *n = head;
-    while(n-> nast != NULL){
-        n = n->nast;
-    }
-    n -> nast = NULL;
-    free(n);
+void usun_element_stosu(stos **head){
+  stos *tmp = NULL;
+  tmp = (*head) -> nast;
+  free(*head);
+  *head = tmp;
 }
 void wypisz(stos *head){
     stos *n = head;
-    while(n-> nast != NULL){
-        n = n->nast;
-    }
     printf("%c", n->znak);
-    usun_element_stosu(head);
-}
-
-void  wypisz_onp(char *tab) {
-    char tmp[20];
-    char tmp2[20];
-    strcpy(tmp, tab);
-    strcpy(tmp2, tab);
-    char korektor[] = " +*-=()/";
-    char *schowek = malloc(sizeof(schowek));
-    schowek = strtok(tmp, korektor);
-    while (schowek != NULL) {
-        //printf("%s\n", schowek);
-        schowek = strtok(NULL, korektor);
-    }
-    char korektor2[] = "1234567890() ";
-    char *schowek2;
-    stos *head = NULL;
-    schowek2 = strtok(tmp2, korektor2);
-    while (schowek2 != NULL) {
-       // printf("%s\n", schowek2);
-        schowek2 = strtok(NULL, korektor2);
-    }
-    printf("%s" ,schowek2);
-//    for (int i = 0; i < sizeof(schowek2); i++) {
-//       dodaj(&head, schowek2[i]);
-//
-//    }
-
-//    printf("%c",schowek[0]);
-//    printf(" ");
-//    for(int j = 1;j<sizeof(schowek); j++){
-//        printf("%c", schowek2[j]);
-//
-//    }
 
 }
 
 
 int main(int argc, char **argv) {
+    char temp[20];
+    stos *head = NULL;
 
-    printf("%s", argv[1]);
-    printf("\n");
-    wypisz_onp(argv[1]);
+    temp[0] = argv[1][0];
 
+    for(int i = 1; i<strlen(argv[1]); i++){
+        temp[i] = argv[1][i];
+        if(temp[i] == '-' || temp[i] == '/' || temp[i] == '*' || temp[i] == '+') {
+            dodaj(&head, temp[i]);
+            temp[i] = argv[1][i+1];
+        }
 
-
+}
+    printf("%c", temp[0]);
+    printf(" ");
+    for(int j = 1; j<strlen(argv[1])+1; j++){
+        printf("%c",temp[j]);
+        printf(" ");
+        wypisz(head);
+        usun_element_stosu(&head);
+    }
+    
     return 0;
 }
