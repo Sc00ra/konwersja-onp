@@ -1,0 +1,89 @@
+#include <stdio.h>
+#include <malloc.h>
+#include<string.h>
+
+typedef struct stosik{
+    char znak;
+    struct stosik *nast;
+}stos;
+
+void dodaj(stos **head, char znak){
+    stos * nowy = malloc(sizeof(stos));
+    nowy -> znak = znak;
+    nowy -> nast =NULL;
+    if(*head == NULL){
+        *head = nowy;
+    }
+    else{
+        stos *n = *head;
+        while(n -> nast !=NULL){
+            n = n -> nast;
+            n -> nast = nowy;
+        }
+        n -> nast = nowy;
+        nowy -> nast =NULL;
+    }
+}
+void usun_element_stosu(stos *head){
+    stos *n = head;
+    while(n-> nast != NULL){
+        n = n->nast;
+    }
+    n -> nast = NULL;
+    free(n);
+}
+void wypisz(stos *head){
+    stos *n = head;
+    while(n-> nast != NULL){
+        n = n->nast;
+    }
+    printf("%c", n->znak);
+    usun_element_stosu(head);
+}
+
+void  wypisz_onp(char *tab) {
+    char tmp[20];
+    char tmp2[20];
+    strcpy(tmp, tab);
+    strcpy(tmp2, tab);
+    char korektor[] = " +*-=()/";
+    char *schowek = malloc(sizeof(schowek));
+    schowek = strtok(tmp, korektor);
+    while (schowek != NULL) {
+        //printf("%s\n", schowek);
+        schowek = strtok(NULL, korektor);
+    }
+    char korektor2[] = "1234567890() ";
+    char *schowek2;
+    stos *head = NULL;
+    schowek2 = strtok(tmp2, korektor2);
+    while (schowek2 != NULL) {
+       // printf("%s\n", schowek2);
+        schowek2 = strtok(NULL, korektor2);
+    }
+    printf("%s" ,schowek2);
+//    for (int i = 0; i < sizeof(schowek2); i++) {
+//       dodaj(&head, schowek2[i]);
+//
+//    }
+
+//    printf("%c",schowek[0]);
+//    printf(" ");
+//    for(int j = 1;j<sizeof(schowek); j++){
+//        printf("%c", schowek2[j]);
+//
+//    }
+
+}
+
+
+int main(int argc, char **argv) {
+
+    printf("%s", argv[1]);
+    printf("\n");
+    wypisz_onp(argv[1]);
+
+
+
+    return 0;
+}
